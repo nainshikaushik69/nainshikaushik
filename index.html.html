@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nainshi Kaushik — UX/UI Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#03010A;
+  --purple:#7B4FFF;--pink:#FF4FCB;--cyan:#00E5FF;--green:#39FF8F;--wa:#25D366;
+  --white:rgba(255,255,255,0.92);--muted:rgba(255,255,255,0.45);--dimmed:rgba(255,255,255,0.18);
+  --display:'Syne',sans-serif;--body:'Plus Jakarta Sans',sans-serif;
+  --section-pad: clamp(3rem, 8vw, 7rem) clamp(1rem, 5vw, 4rem);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:var(--body);font-weight:300;overflow-x:hidden;cursor:none}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+
+/* BLOBS */
+.blob{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;animation:blobFloat 12s ease-in-out infinite}
+.blob-1{width:min(600px,80vw);height:min(600px,80vw);background:radial-gradient(circle,rgba(123,79,255,.18),transparent 70%);top:-200px;left:-100px}
+.blob-2{width:min(500px,70vw);height:min(500px,70vw);background:radial-gradient(circle,rgba(255,79,203,.14),transparent 70%);top:30%;right:-150px;animation-delay:-4s}
+.blob-3{width:min(400px,60vw);height:min(400px,60vw);background:radial-gradient(circle,rgba(0,229,255,.1),transparent 70%);bottom:10%;left:20%;animation-delay:-8s}
+@keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-30px) scale(1.05)}66%{transform:translate(-20px,20px) scale(.97)}}
+
+/* CURSOR — desktop only */
+.cursor{position:fixed;width:8px;height:8px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+.cursor-trail{position:fixed;width:32px;height:32px;border:1px solid rgba(123,79,255,.6);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .15s ease}
+
+/* ══ NAV ══ */
+nav{
+  position:fixed;top:1.5rem;left:50%;transform:translateX(-50%);
+  z-index:200;display:flex;align-items:center;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);
+  border-radius:100px;padding:.6rem .6rem .6rem 1.6rem;
+  animation:slideDown .7s .2s both;
+  max-width:calc(100vw - 2rem);
+}
+@keyframes slideDown{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.nav-logo{font-family:var(--display);font-weight:700;font-size:.95rem;background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;flex-shrink:0}
+.nav-links{display:flex;gap:.1rem;list-style:none;margin:0 .8rem}
+.nav-links a{font-size:.75rem;letter-spacing:.03em;color:var(--muted);text-decoration:none;padding:.45rem .8rem;border-radius:100px;transition:all .2s;white-space:nowrap}
+.nav-links a:hover{color:var(--white);background:rgba(255,255,255,.06)}
+.nav-hire{display:inline-flex;align-items:center;gap:.45rem;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-family:var(--display);font-weight:600;font-size:.8rem;padding:.6rem 1.2rem;border-radius:100px;text-decoration:none;transition:all .25s;box-shadow:0 0 20px rgba(123,79,255,.4);white-space:nowrap;flex-shrink:0}
+.nav-hire:hover{box-shadow:0 0 35px rgba(123,79,255,.65);transform:scale(1.04)}
+.hire-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1.8s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+/* Hamburger — mobile */
+.nav-hamburger{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:.4rem;margin-left:.5rem}
+.nav-hamburger span{display:block;width:20px;height:2px;background:var(--muted);border-radius:2px;transition:all .3s}
+.nav-mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(3,1,10,.95);backdrop-filter:blur(24px);z-index:190;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem}
+.nav-mobile-menu.open{display:flex}
+.nav-mobile-menu a{font-family:var(--display);font-size:1.8rem;font-weight:700;color:var(--white);text-decoration:none;letter-spacing:-.02em;transition:color .2s}
+.nav-mobile-menu a:hover{color:var(--purple)}
+.nav-mobile-close{position:absolute;top:2rem;right:2rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:var(--white);width:40px;height:40px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* ══ HERO ══ */
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7rem clamp(1rem,6vw,4rem) 5rem;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:.6rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(12px);padding:.45rem 1.2rem;border-radius:100px;font-size:clamp(.65rem,.9vw,.75rem);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem;animation:fadeUp .7s .4s both}
+.badge-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1.8s ease-in-out infinite;flex-shrink:0}
+.hero-name{font-family:var(--display);font-size:clamp(3.8rem,9vw,7.5rem);font-weight:800;line-height:.88;letter-spacing:-.03em;animation:fadeUp .8s .55s both}
+.hero-name .l1{display:block;color:var(--white)}
+.hero-name .l2{display:block;background:linear-gradient(135deg,var(--purple) 0%,var(--pink) 50%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200%;animation:gradShift 5s ease infinite}
+@keyframes gradShift{0%,100%{background-position:0%}50%{background-position:100%}}
+.hero-role{font-size:clamp(.9rem,2.5vw,1.1rem);color:var(--muted);margin:1.8rem 0 2.5rem;letter-spacing:.02em;animation:fadeUp .8s .85s both;max-width:90%}
+.hero-role span{color:var(--white);font-weight:400}
+.hero-cta-row{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;animation:fadeUp .8s 1s both}
+.btn-glow{display:inline-flex;align-items:center;gap:.6rem;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-family:var(--display);font-weight:600;font-size:clamp(.82rem,2vw,.9rem);padding:.9rem 2rem;border-radius:100px;text-decoration:none;box-shadow:0 0 30px rgba(123,79,255,.45);transition:all .25s;white-space:nowrap}
+.btn-glow:hover{box-shadow:0 0 50px rgba(123,79,255,.7);transform:translateY(-2px) scale(1.02)}
+.btn-glass{display:inline-flex;align-items:center;gap:.6rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(16px);color:var(--white);font-size:clamp(.82rem,2vw,.9rem);padding:.9rem 2rem;border-radius:100px;text-decoration:none;transition:all .2s;white-space:nowrap}
+.btn-glass:hover{background:rgba(255,255,255,.09);transform:translateY(-2px)}
+.hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;animation:fadeUp .8s 1.4s both}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.3));animation:scrollPulse 2s ease-in-out infinite}
+.scroll-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dimmed)}
+@keyframes scrollPulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* ══ STATS ══ */
+.stats-strip{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem) clamp(3rem,8vw,6rem)}
+.stats-glass{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-radius:20px;display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden}
+.stat-cell{padding:clamp(1.5rem,4vw,2.5rem) 1rem;text-align:center;border-right:1px solid rgba(255,255,255,.06);transition:background .2s}
+.stat-cell:last-child{border-right:none}
+.stat-cell:hover{background:rgba(255,255,255,.03)}
+.stat-n{font-family:var(--display);font-size:clamp(2rem,5vw,3rem);font-weight:700;background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;line-height:1;margin-bottom:.4rem}
+.stat-l{font-size:clamp(.6rem,.8vw,.72rem);letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+
+/* ══ MARQUEE ══ */
+.marquee-wrap{overflow:hidden;padding:1.5rem 0;position:relative;z-index:1}
+.marquee-track{display:flex;animation:marquee 28s linear infinite;white-space:nowrap}
+.marquee-item{display:inline-flex;align-items:center;gap:1rem;padding:0 1.5rem;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dimmed)}
+.m-dot{width:4px;height:4px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink));flex-shrink:0}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ══ SECTION BASE ══ */
+section{padding:var(--section-pad);position:relative;z-index:1}
+.container{max-width:1200px;margin:0 auto}
+.sec-label{font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--purple);margin-bottom:1rem;display:flex;align-items:center;gap:.8rem}
+.sec-label::after{content:'';flex:0 0 40px;height:1px;background:linear-gradient(to right,var(--purple),transparent)}
+.sec-title{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);font-weight:700;line-height:1.05;letter-spacing:-.02em;margin-bottom:1rem}
+.sec-title em{font-style:italic;font-weight:300;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* ══ ABOUT ══ */
+.about-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(1.5rem,4vw,3rem);margin-top:clamp(2rem,4vw,4rem);align-items:start}
+.about-text p{font-size:clamp(.9rem,2vw,1.02rem);line-height:1.85;color:rgba(255,255,255,.6);margin-bottom:1.4rem}
+.about-text strong{color:var(--white);font-weight:500}
+.about-detail-grid{display:grid;gap:.8rem}
+.detail-glass{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(16px);border-radius:14px;padding:1rem 1.3rem;transition:all .2s}
+.detail-glass:hover{background:rgba(255,255,255,.06);border-color:rgba(123,79,255,.3)}
+.dk{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--purple);margin-bottom:.25rem}
+.dv{font-size:.88rem;color:var(--white)}
+
+/* ══ SKILLS ══ */
+.skills-section{background:linear-gradient(180deg,transparent,rgba(123,79,255,.04),transparent)}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:clamp(2rem,4vw,4rem)}
+.skill-group{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(20px);border-radius:20px;padding:clamp(1.2rem,3vw,2rem);transition:all .3s}
+.skill-group:hover{background:rgba(255,255,255,.05);border-color:rgba(123,79,255,.25);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.sg-title{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.sg-title.c-purple{color:var(--purple)}.sg-title.c-pink{color:var(--pink)}.sg-title.c-cyan{color:var(--cyan)}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem}
+.tag{font-size:.76rem;padding:.35rem .9rem;border-radius:100px;transition:all .2s;cursor:default}
+.tag-outline{border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);background:rgba(255,255,255,.02)}
+.tag-outline:hover{border-color:rgba(123,79,255,.5);color:var(--white);background:rgba(123,79,255,.1)}
+.tag-filled{background:rgba(123,79,255,.12);border:1px solid rgba(123,79,255,.2);color:rgba(160,130,255,.9)}
+.tag-filled:hover{background:rgba(123,79,255,.22)}
+.tag-tool{background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);color:rgba(0,229,255,.8)}
+.tag-tool:hover{background:rgba(0,229,255,.12)}
+
+/* ══ EXPERIENCE ══ */
+.exp-list{margin-top:clamp(2rem,4vw,4rem);display:flex;flex-direction:column;gap:1.2rem}
+.exp-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(20px);border-radius:20px;padding:clamp(1.5rem,3vw,2.5rem);display:grid;grid-template-columns:220px 1fr;gap:clamp(1.5rem,3vw,3rem);transition:all .3s}
+.exp-card:hover{background:rgba(255,255,255,.05);border-color:rgba(123,79,255,.25);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.exp-date{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);margin-bottom:.6rem;display:block}
+.exp-co{font-family:var(--display);font-size:clamp(1rem,2.5vw,1.25rem);font-weight:600;color:var(--white);line-height:1.2;margin-bottom:.4rem}
+.exp-type-badge{display:inline-block;background:rgba(57,255,143,.08);border:1px solid rgba(57,255,143,.15);color:rgba(57,255,143,.8);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:.22rem .7rem;border-radius:100px;margin-top:.4rem}
+.exp-role{font-size:.9rem;font-weight:500;color:var(--white);margin-bottom:.8rem}
+.exp-bullets{list-style:none}
+.exp-bullets li{font-size:.85rem;line-height:1.7;color:rgba(255,255,255,.55);padding:.25rem 0;padding-left:1.3rem;position:relative}
+.exp-bullets li::before{content:'';position:absolute;left:0;top:.7rem;width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink))}
+
+/* ══ PROJECTS ══ */
+.projects-section{background:linear-gradient(180deg,transparent,rgba(0,229,255,.03),transparent)}
+.proj-filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:2.5rem;margin-bottom:2rem}
+.filter-btn{font-size:.74rem;letter-spacing:.06em;padding:.45rem 1.1rem;border-radius:100px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:var(--body)}
+.filter-btn:hover{color:var(--white);border-color:rgba(123,79,255,.4);background:rgba(123,79,255,.08)}
+.filter-btn.active{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border-color:transparent;box-shadow:0 0 16px rgba(123,79,255,.35)}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.proj-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:18px;overflow:hidden;cursor:pointer;transition:all .3s;position:relative}
+.proj-card:hover{transform:translateY(-6px);border-color:rgba(123,79,255,.3);box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.proj-card.hidden{display:none}
+.proj-card[data-cat="fintech"] .proj-accent{background:linear-gradient(135deg,#7B4FFF,#00E5FF)}
+.proj-card[data-cat="wellness"] .proj-accent{background:linear-gradient(135deg,#39FF8F,#00E5FF)}
+.proj-card[data-cat="events"] .proj-accent{background:linear-gradient(135deg,#FF4FCB,#FF8C42)}
+.proj-card[data-cat="saas"] .proj-accent{background:linear-gradient(135deg,#7B4FFF,#FF4FCB)}
+.proj-card[data-cat="ecommerce"] .proj-accent{background:linear-gradient(135deg,#FF8C42,#FF4FCB)}
+.proj-card[data-cat="education"] .proj-accent{background:linear-gradient(135deg,#00E5FF,#39FF8F)}
+.proj-card[data-cat="ai"] .proj-accent{background:linear-gradient(135deg,#7B4FFF,#00E5FF)}
+.proj-card[data-cat="pm"] .proj-accent{background:linear-gradient(135deg,#FF4FCB,#7B4FFF)}
+.proj-accent{height:3px;width:100%}
+.proj-thumb{height:140px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;position:relative;overflow:hidden}
+.proj-thumb::before{content:'';position:absolute;inset:0;opacity:.12}
+.proj-card[data-cat="fintech"] .proj-thumb::before{background:linear-gradient(135deg,#7B4FFF,#00E5FF)}
+.proj-card[data-cat="wellness"] .proj-thumb::before{background:linear-gradient(135deg,#39FF8F,#00E5FF)}
+.proj-card[data-cat="events"] .proj-thumb::before{background:linear-gradient(135deg,#FF4FCB,#FF8C42)}
+.proj-card[data-cat="saas"] .proj-thumb::before{background:linear-gradient(135deg,#7B4FFF,#FF4FCB)}
+.proj-card[data-cat="ecommerce"] .proj-thumb::before{background:linear-gradient(135deg,#FF8C42,#FF4FCB)}
+.proj-card[data-cat="education"] .proj-thumb::before{background:linear-gradient(135deg,#00E5FF,#39FF8F)}
+.proj-card[data-cat="ai"] .proj-thumb::before{background:linear-gradient(135deg,#7B4FFF,#00E5FF)}
+.proj-card[data-cat="pm"] .proj-thumb::before{background:linear-gradient(135deg,#FF4FCB,#7B4FFF)}
+.proj-hover-overlay{position:absolute;inset:0;background:rgba(123,79,255,.15);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;backdrop-filter:blur(4px)}
+.proj-card:hover .proj-hover-overlay{opacity:1}
+.view-label{font-family:var(--display);font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,.4);padding:.45rem 1.1rem;border-radius:100px}
+.proj-body{padding:1.3rem}
+.proj-cat-badge{display:inline-block;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;padding:.22rem .75rem;border-radius:100px;margin-bottom:.7rem}
+.proj-card[data-cat="fintech"] .proj-cat-badge{background:rgba(123,79,255,.12);border:1px solid rgba(123,79,255,.2);color:rgba(160,130,255,.9)}
+.proj-card[data-cat="wellness"] .proj-cat-badge{background:rgba(57,255,143,.08);border:1px solid rgba(57,255,143,.2);color:rgba(57,255,143,.9)}
+.proj-card[data-cat="events"] .proj-cat-badge{background:rgba(255,79,203,.08);border:1px solid rgba(255,79,203,.2);color:rgba(255,79,203,.9)}
+.proj-card[data-cat="saas"] .proj-cat-badge{background:rgba(123,79,255,.12);border:1px solid rgba(123,79,255,.2);color:rgba(160,130,255,.9)}
+.proj-card[data-cat="ecommerce"] .proj-cat-badge{background:rgba(255,140,66,.08);border:1px solid rgba(255,140,66,.2);color:rgba(255,180,100,.9)}
+.proj-card[data-cat="education"] .proj-cat-badge{background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);color:rgba(0,229,255,.9)}
+.proj-card[data-cat="ai"] .proj-cat-badge{background:rgba(123,79,255,.12);border:1px solid rgba(123,79,255,.2);color:rgba(160,130,255,.9)}
+.proj-card[data-cat="pm"] .proj-cat-badge{background:rgba(255,79,203,.08);border:1px solid rgba(255,79,203,.2);color:rgba(255,79,203,.9)}
+.proj-name{font-family:var(--display);font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:.4rem}
+.proj-desc{font-size:.8rem;line-height:1.6;color:rgba(255,255,255,.5)}
+.proj-footer{display:flex;align-items:center;justify-content:space-between;margin-top:1rem;padding-top:.9rem;border-top:1px solid rgba(255,255,255,.06)}
+.proj-company{font-size:.7rem;color:rgba(255,255,255,.35)}
+.proj-arrow{font-size:.85rem;color:var(--purple);transition:transform .2s}
+.proj-card:hover .proj-arrow{transform:translateX(4px)}
+
+/* ══ PROJECT MODAL ══ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:clamp(1rem,4vw,2rem);opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:rgba(10,6,25,.96);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(40px);border-radius:24px;width:100%;max-width:640px;max-height:90svh;overflow-y:auto;transform:translateY(30px) scale(.97);transition:transform .35s cubic-bezier(.34,1.56,.64,1);position:relative}
+.modal-overlay.open .modal-box{transform:translateY(0) scale(1)}
+.modal-box::-webkit-scrollbar{width:3px}
+.modal-box::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+.modal-accent{height:4px;border-radius:24px 24px 0 0}
+.modal-inner{padding:clamp(1.5rem,4vw,2.5rem)}
+.modal-close{position:absolute;top:1.2rem;right:1.2rem;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:var(--muted);cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:rgba(255,255,255,.14);color:var(--white)}
+.modal-emoji{font-size:2.5rem;margin-bottom:.8rem;display:block}
+.modal-cat{display:inline-block;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;padding:.22rem .75rem;border-radius:100px;margin-bottom:.8rem}
+.modal-title{font-family:var(--display);font-size:clamp(1.6rem,5vw,2rem);font-weight:700;margin-bottom:.4rem;line-height:1.1}
+.modal-company-line{font-size:.8rem;color:var(--muted);margin-bottom:1.5rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.modal-section-label{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--purple);margin-bottom:.7rem;margin-top:1.3rem}
+.modal-body-text{font-size:.9rem;line-height:1.75;color:rgba(255,255,255,.6)}
+.modal-tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.5rem}
+.modal-tag{font-size:.74rem;padding:.3rem .85rem;border-radius:100px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6)}
+.modal-features{list-style:none;margin-top:.5rem}
+.modal-features li{font-size:.86rem;line-height:1.7;color:rgba(255,255,255,.6);padding:.28rem 0;padding-left:1.3rem;position:relative}
+.modal-features li::before{content:'';position:absolute;left:0;top:.7rem;width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink))}
+
+/* ══ PROCESS ══ */
+.process-section{background:linear-gradient(180deg,transparent,rgba(255,79,203,.03),transparent)}
+.process-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:clamp(2rem,4vw,4rem)}
+.process-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(20px);border-radius:18px;padding:clamp(1.2rem,3vw,2rem) 1.2rem;transition:all .3s;cursor:default}
+.process-card:hover{background:rgba(255,255,255,.06);border-color:rgba(123,79,255,.3);transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.pc-num{font-family:var(--display);font-size:clamp(1.8rem,4vw,2.5rem);font-weight:700;background:linear-gradient(135deg,rgba(123,79,255,.3),rgba(255,79,203,.2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;margin-bottom:1rem;line-height:1}
+.pc-title{font-size:.88rem;font-weight:600;color:var(--white);margin-bottom:.5rem}
+.pc-desc{font-size:.76rem;line-height:1.65;color:rgba(255,255,255,.45)}
+
+/* ══ EDUCATION ══ */
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:clamp(2rem,4vw,4rem)}
+.edu-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(20px);border-radius:20px;padding:clamp(1.5rem,3vw,2.5rem);transition:all .3s;position:relative;overflow:hidden}
+.edu-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(123,79,255,.4),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.edu-card:hover::before{transform:scaleX(1)}
+.edu-card:hover{background:rgba(255,255,255,.05);border-color:rgba(123,79,255,.2);transform:translateY(-4px)}
+.edu-yr{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--purple);margin-bottom:.7rem}
+.edu-deg{font-family:var(--display);font-size:clamp(1.2rem,3vw,1.5rem);font-weight:600;margin-bottom:.4rem}
+.edu-uni{font-size:.84rem;color:var(--muted)}
+.cert-glass{margin-top:0;grid-column:span 2;background:rgba(123,79,255,.06);border:1px solid rgba(123,79,255,.18);backdrop-filter:blur(20px);border-radius:20px;padding:clamp(1.2rem,3vw,2rem) clamp(1.2rem,4vw,2.5rem);display:flex;align-items:center;gap:1.5rem;transition:all .3s}
+.cert-glass:hover{background:rgba(123,79,255,.1);border-color:rgba(123,79,255,.35);transform:translateY(-3px)}
+.cert-icon{width:48px;height:48px;flex-shrink:0;border-radius:12px;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.cert-title{font-size:.92rem;font-weight:500;margin-bottom:.25rem}
+.cert-sub{font-size:.76rem;color:var(--muted)}
+
+/* ══ HIRE CTA ══ */
+.hire-section{position:relative;z-index:1;padding:clamp(3rem,6vw,5rem) clamp(1rem,5vw,4rem) clamp(4rem,8vw,8rem);text-align:center}
+.hire-card{max-width:800px;margin:0 auto;background:rgba(123,79,255,.06);border:1px solid rgba(123,79,255,.2);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border-radius:28px;padding:clamp(2.5rem,6vw,5rem) clamp(1.5rem,6vw,4rem);position:relative;overflow:hidden}
+.hire-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(123,79,255,.12),transparent 60%);pointer-events:none}
+.hire-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:280px;height:280px;background:radial-gradient(circle,rgba(123,79,255,.25),transparent 70%);filter:blur(40px);pointer-events:none}
+.hire-label{font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;color:var(--purple);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:.6rem}
+.hire-title{font-family:var(--display);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1;letter-spacing:-.02em;margin-bottom:1.2rem}
+.hire-sub{font-size:clamp(.88rem,2vw,1rem);color:var(--muted);max-width:480px;margin:0 auto 2.5rem;line-height:1.75}
+.hire-btn-wrap{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap}
+.btn-hire-main{display:inline-flex;align-items:center;gap:.7rem;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-family:var(--display);font-weight:700;font-size:clamp(.88rem,2.5vw,1rem);padding:1rem 2.5rem;border-radius:100px;text-decoration:none;box-shadow:0 0 40px rgba(123,79,255,.5);transition:all .3s;position:relative;z-index:1}
+.btn-hire-main:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 0 60px rgba(123,79,255,.7)}
+.btn-icon{display:inline-block;animation:wave .8s ease infinite alternate}
+@keyframes wave{from{transform:rotate(-10deg)}to{transform:rotate(10deg)}}
+
+/* ══ CONTACT ══ */
+.contact-section{background:linear-gradient(180deg,transparent,rgba(0,229,255,.03),transparent)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,4vw,3rem);margin-top:clamp(2rem,4vw,4rem);align-items:start}
+.contact-left p{font-size:clamp(.88rem,2vw,1rem);line-height:1.8;color:var(--muted);margin-bottom:1.8rem}
+.contact-email{font-family:var(--display);font-size:clamp(1.2rem,3vw,1.6rem);font-weight:600;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;display:inline-block;margin-bottom:1rem}
+.contact-email:hover{opacity:.8}
+
+/* WhatsApp — only below email */
+.wa-below-email{
+  display:inline-flex;align-items:center;gap:.7rem;
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  color:#fff;font-family:var(--display);font-weight:600;
+  font-size:.88rem;padding:.75rem 1.8rem;border-radius:100px;
+  text-decoration:none;
+  box-shadow:0 0 20px rgba(37,211,102,.3);
+  transition:all .25s;
+}
+.wa-below-email:hover{box-shadow:0 0 40px rgba(37,211,102,.5);transform:translateY(-2px)}
+.wa-below-email svg{flex-shrink:0}
+
+.contact-items{display:flex;flex-direction:column;gap:.9rem}
+.contact-item{display:flex;align-items:center;gap:1.1rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(16px);border-radius:14px;padding:1.1rem 1.4rem;transition:all .2s}
+.contact-item:hover{background:rgba(255,255,255,.06);border-color:rgba(123,79,255,.25);transform:translateX(3px)}
+a.contact-item{color:var(--white)}
+a.contact-item:hover .ci-val{color:var(--cyan)}
+.ci-icon{width:38px;height:38px;flex-shrink:0;border-radius:10px;background:linear-gradient(135deg,rgba(123,79,255,.2),rgba(255,79,203,.2));display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.ci-label{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--purple);margin-bottom:.2rem}
+.ci-val{font-size:.86rem;color:var(--white)}
+
+/* FOOTER */
+footer{text-align:center;padding:1.5rem;border-top:1px solid rgba(255,255,255,.05);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dimmed);position:relative;z-index:1}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--purple),var(--pink));border-radius:3px}
+
+/* ════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+════════════════════════════════ */
+
+/* ── Laptop: 1025px – 1440px ── */
+@media(min-width:1025px) and (max-width:1440px){
+  .hero-name{font-size:clamp(3.5rem,7vw,6.5rem)}
+  .hero-role{font-size:.95rem}
+  .sec-title{font-size:clamp(1.8rem,3.2vw,2.8rem)}
+  .hire-title{font-size:clamp(1.8rem,4vw,3.2rem)}
+  .stat-n{font-size:clamp(1.8rem,3vw,2.4rem)}
+  .edu-deg{font-size:clamp(1.1rem,2vw,1.3rem)}
+  .exp-co{font-size:clamp(.95rem,1.5vw,1.1rem)}
+  .modal-title{font-size:clamp(1.4rem,2.5vw,1.8rem)}
+  .btn-glow,.btn-glass,.btn-hire-main{font-size:.85rem;padding:.85rem 1.8rem}
+  section{padding:clamp(3rem,5vw,5rem) clamp(1.5rem,4vw,3.5rem)}
+}
+
+/* Tablet wide: ≤1024px */
+@media(max-width:1024px){
+  .proj-grid{grid-template-columns:repeat(2,1fr)}
+  .process-grid{grid-template-columns:repeat(3,1fr)}
+  .skills-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* Tablet narrow / large mobile: ≤768px */
+@media(max-width:768px){
+  body{cursor:auto}
+  .cursor,.cursor-trail{display:none}
+
+  /* Nav collapses */
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+  nav{padding:.55rem .55rem .55rem 1.3rem;gap:.4rem}
+
+  /* Hero */
+  .hero{padding:6rem 1.5rem 4rem}
+  .hero-name{font-size:clamp(3.2rem,15vw,5.5rem)}
+  .hero-cta-row{gap:.8rem}
+
+  /* Grids → single column */
+  .about-grid,.contact-grid{grid-template-columns:1fr;gap:2rem}
+  .skills-grid{grid-template-columns:1fr}
+  .exp-card{grid-template-columns:1fr;gap:.8rem}
+  .edu-grid{grid-template-columns:1fr}
+  .cert-glass{grid-column:span 1}
+
+  /* Projects */
+  .proj-grid{grid-template-columns:repeat(2,1fr)}
+  .proj-filters{gap:.4rem}
+  .filter-btn{font-size:.7rem;padding:.4rem .9rem}
+
+  /* Process */
+  .process-grid{grid-template-columns:repeat(2,1fr)}
+
+  /* Stats */
+  .stats-glass{grid-template-columns:repeat(2,1fr)}
+  .stat-cell:nth-child(2){border-right:none}
+  .stat-cell:nth-child(3){border-top:1px solid rgba(255,255,255,.06)}
+  .stat-cell:nth-child(4){border-top:1px solid rgba(255,255,255,.06);border-right:none}
+
+  /* Hire */
+  .hire-card{padding:2.5rem 1.5rem}
+  .hire-title{font-size:clamp(1.8rem,8vw,3rem)}
+}
+
+/* Mobile: ≤480px */
+@media(max-width:480px){
+  .hero-name{font-size:clamp(2.8rem,18vw,4.5rem)}
+  .hero-role{font-size:.88rem}
+  .btn-glow,.btn-glass,.btn-hire-main{font-size:.82rem;padding:.82rem 1.6rem}
+  .proj-grid{grid-template-columns:1fr}
+  .process-grid{grid-template-columns:1fr 1fr}
+  .stats-glass{grid-template-columns:1fr 1fr}
+  .sec-title{font-size:clamp(1.8rem,9vw,2.8rem)}
+  .modal-box{border-radius:18px}
+  .modal-inner{padding:1.4rem}
+  .nav-hire{display:none}
+}
+
+/* Very small: ≤360px */
+@media(max-width:360px){
+  .hero-name{font-size:2.6rem}
+  .proj-grid{grid-template-columns:1fr}
+  .process-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<!-- MOBILE MENU -->
+<div class="nav-mobile-menu" id="mobileMenu">
+  <button class="nav-mobile-close" id="mobileClose">✕</button>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#skills" onclick="closeMobile()">Skills</a>
+  <a href="#experience" onclick="closeMobile()">Work</a>
+  <a href="#projects" onclick="closeMobile()">Projects</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- PROJECT MODAL -->
+<div class="modal-overlay" id="projectModal">
+  <div class="modal-box">
+    <div class="modal-accent" id="modalAccent"></div>
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="modal-inner">
+      <span class="modal-emoji" id="modalEmoji"></span>
+      <div class="modal-cat" id="modalCat"></div>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <p class="modal-company-line" id="modalCompany"></p>
+      <p class="modal-section-label">Overview</p>
+      <p class="modal-body-text" id="modalOverview"></p>
+      <p class="modal-section-label">What I Designed</p>
+      <ul class="modal-features" id="modalFeatures"></ul>
+      <p class="modal-section-label">Skills Used</p>
+      <div class="modal-tags" id="modalTags"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Nainshi K.</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Work</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:nainshikaushik69@gmail.com" class="nav-hire"><span class="hire-dot"></span> Hire Me</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span class="badge-dot"></span> Available for opportunities</div>
+  <h1 class="hero-name"><span class="l1">Nainshi</span><span class="l2">Kaushik</span></h1>
+  <p class="hero-role">UX/UI Designer · <span>2 Years Experience</span> · Mobile · Web · SaaS</p>
+  <div class="hero-cta-row">
+    <a href="mailto:nainshikaushik69@gmail.com" class="btn-glow">✦ Hire Me</a>
+    <a href="#projects" class="btn-glass">View Projects →</a>
+    <a href="#contact" class="btn-glass">Contact</a>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div><span class="scroll-label">Scroll</span></div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip reveal">
+  <div class="stats-glass">
+    <div class="stat-cell"><span class="stat-n">2+</span><span class="stat-l">Years</span></div>
+    <div class="stat-cell"><span class="stat-n">15+</span><span class="stat-l">Projects</span></div>
+    <div class="stat-cell"><span class="stat-n">4</span><span class="stat-l">Companies</span></div>
+    <div class="stat-cell"><span class="stat-n">10+</span><span class="stat-l">Skills</span></div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="m-dot"></span>UX Research</span><span class="marquee-item"><span class="m-dot"></span>Wireframing</span><span class="marquee-item"><span class="m-dot"></span>Prototyping</span><span class="marquee-item"><span class="m-dot"></span>Figma Expert</span><span class="marquee-item"><span class="m-dot"></span>Design Systems</span><span class="marquee-item"><span class="m-dot"></span>Mobile App Design</span><span class="marquee-item"><span class="m-dot"></span>SaaS Products</span><span class="marquee-item"><span class="m-dot"></span>Dashboard Design</span><span class="marquee-item"><span class="m-dot"></span>Interaction Design</span><span class="marquee-item"><span class="m-dot"></span>Usability Testing</span><span class="marquee-item"><span class="m-dot"></span>Design Thinking</span><span class="marquee-item"><span class="m-dot"></span>User Flows</span>
+    <span class="marquee-item"><span class="m-dot"></span>UX Research</span><span class="marquee-item"><span class="m-dot"></span>Wireframing</span><span class="marquee-item"><span class="m-dot"></span>Prototyping</span><span class="marquee-item"><span class="m-dot"></span>Figma Expert</span><span class="marquee-item"><span class="m-dot"></span>Design Systems</span><span class="marquee-item"><span class="m-dot"></span>Mobile App Design</span><span class="marquee-item"><span class="m-dot"></span>SaaS Products</span><span class="marquee-item"><span class="m-dot"></span>Dashboard Design</span><span class="marquee-item"><span class="m-dot"></span>Interaction Design</span><span class="marquee-item"><span class="m-dot"></span>Usability Testing</span><span class="marquee-item"><span class="m-dot"></span>Design Thinking</span><span class="marquee-item"><span class="m-dot"></span>User Flows</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <p class="sec-label reveal">About Me</p>
+    <h2 class="sec-title reveal">Design is thinking<br/><em>made visual</em></h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm a dedicated <strong>UX/UI Designer</strong> with two years of professional experience, specializing in crafting intuitive, visually engaging, and user-centered digital experiences.</p>
+        <p>I transform complex ideas into clear, functional interfaces through effective problem solving and design thinking. My experience spans <strong>mobile apps, web platforms, SaaS products, and dashboards</strong>.</p>
+        <p>Currently at <strong>Agrimfincap Pvt. Ltd.</strong>, designing fintech products. Pursuing MCA at AKTU University.</p>
+      </div>
+      <div class="about-detail-grid reveal">
+        <div class="detail-glass"><p class="dk">Location</p><p class="dv">Bulanshahr, Uttar Pradesh</p></div>
+        <div class="detail-glass"><p class="dk">Currently At</p><p class="dv">Agrimfincap Pvt. Ltd.</p></div>
+        <div class="detail-glass"><p class="dk">Specialization</p><p class="dv">Mobile · Web · SaaS · Dashboards</p></div>
+        <div class="detail-glass"><p class="dk">Languages</p><p class="dv">Hindi (Native) · English (Conversational)</p></div>
+        <div class="detail-glass"><p class="dk">Status</p><p class="dv">🟢 Open to new opportunities</p></div>
+        <div class="detail-glass"><p class="dk">Portfolio & Social</p><p class="dv"><a href="https://www.behance.net/nainshikaushik" target="_blank" style="color:var(--purple);text-decoration:none;border-bottom:1px solid rgba(123,79,255,.3);transition:border-color .2s;" onmouseover="this.style.borderColor='var(--purple)'" onmouseout="this.style.borderColor='rgba(123,79,255,.3)'">Behance</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/nainshi-kaushik-7734082b8" target="_blank" style="color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(0,229,255,.3);transition:border-color .2s;" onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='rgba(0,229,255,.3)'">LinkedIn</a></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills-section" id="skills">
+  <div class="container">
+    <p class="sec-label reveal">Expertise</p>
+    <h2 class="sec-title reveal">What I bring<br/><em>to the table</em></h2>
+    <div class="skills-grid">
+      <div class="skill-group reveal">
+        <p class="sg-title c-purple">Design Skills</p>
+        <div class="tags"><span class="tag tag-outline">UX Research</span><span class="tag tag-outline">User Flows</span><span class="tag tag-outline">Wireframes</span><span class="tag tag-outline">Prototypes</span><span class="tag tag-outline">UI Design</span><span class="tag tag-outline">Design Systems</span><span class="tag tag-outline">Interaction Design</span><span class="tag tag-outline">Usability Testing</span></div>
+      </div>
+      <div class="skill-group reveal">
+        <p class="sg-title c-pink">Product Domains</p>
+        <div class="tags"><span class="tag tag-filled">Mobile App</span><span class="tag tag-filled">Web Design</span><span class="tag tag-filled">Dashboard</span><span class="tag tag-filled">SaaS Products</span><span class="tag tag-filled">CRM / LMS</span><span class="tag tag-filled">FinTech</span><span class="tag tag-filled">EdTech</span><span class="tag tag-filled">E-commerce</span></div>
+      </div>
+      <div class="skill-group reveal">
+        <p class="sg-title c-cyan">Tools</p>
+        <div class="tags"><span class="tag tag-tool">⚡ Figma</span><span class="tag tag-tool">Adobe XD</span><span class="tag tag-tool">Framer</span><span class="tag tag-tool">FigJam</span><span class="tag tag-tool">Miro</span><span class="tag tag-tool">Photoshop</span><span class="tag tag-tool">Illustrator</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <p class="sec-label reveal">Experience</p>
+    <h2 class="sec-title reveal">Where I've<br/><em>designed</em></h2>
+    <div class="exp-list">
+      <div class="exp-card reveal">
+        <div><span class="exp-date">Dec 2025 – Present</span><p class="exp-co">Agrimfincap Pvt. Ltd.</p><span class="exp-type-badge">FinTech · Full-time</span></div>
+        <div><p class="exp-role">UX/UI Designer</p><ul class="exp-bullets"><li>Creating wireframes, user flows, and visual designs for new features across fintech platforms.</li><li>Improving user flows and enhancing overall product usability for CRM and LMS products.</li><li>Collaborating with product and dev teams for smooth design-to-development handoff.</li></ul></div>
+      </div>
+      <div class="exp-card reveal">
+        <div><span class="exp-date">Jun 2025 – Dec 2025</span><p class="exp-co">Dhanasya Software Pvt. Ltd.</p><span class="exp-type-badge">SaaS · Full-time</span></div>
+        <div><p class="exp-role">UX/UI Designer</p><ul class="exp-bullets"><li>Designed user interfaces for mobile apps, dashboards, and web platforms end-to-end.</li><li>Created wireframes, user flows, and high-fidelity visual designs for new features.</li><li>Collaborated with developers using component-based design systems for smooth handoff.</li></ul></div>
+      </div>
+      <div class="exp-card reveal">
+        <div><span class="exp-date">Jul 2024 – May 2025</span><p class="exp-co">Ira Technologies Pvt. Ltd.</p><span class="exp-type-badge">Product Studio · Full-time</span></div>
+        <div><p class="exp-role">UX/UI Designer</p><ul class="exp-bullets"><li>Designed clean, user-friendly interfaces across multiple client products in diverse domains.</li><li>Conducted user research, mapped journeys, and iterated on experiences based on insights.</li><li>Delivered complete UI/UX deliverables including wireframes, mockups, and prototypes.</li></ul></div>
+      </div>
+      <div class="exp-card reveal">
+        <div><span class="exp-date">Mar 2024 – Jun 2024</span><p class="exp-co">Ira Technologies Pvt. Ltd.</p><span class="exp-type-badge">Internship · 4 months</span></div>
+        <div><p class="exp-role">UX/UI Designer — Intern</p><ul class="exp-bullets"><li>Gained foundational skills in wireframing, prototyping, and user flows.</li><li>Used Figma, FigJam, and Miro for end-to-end design tasks on live projects.</li><li>Practiced user-centered design through research and journey mapping.</li></ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects-section" id="projects">
+  <div class="container">
+    <p class="sec-label reveal">Featured Work</p>
+    <h2 class="sec-title reveal">Projects I've<br/><em>brought to life</em></h2>
+    <div class="proj-filters reveal">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="fintech">FinTech</button>
+      <button class="filter-btn" data-filter="saas">SaaS</button>
+      <button class="filter-btn" data-filter="wellness">Wellness</button>
+      <button class="filter-btn" data-filter="education">Education</button>
+      <button class="filter-btn" data-filter="ecommerce">E-commerce</button>
+      <button class="filter-btn" data-filter="pm">Project Mgmt</button>
+      <button class="filter-btn" data-filter="ai">AI</button>
+    </div>
+    <div class="proj-grid" id="projGrid">
+      <div class="proj-card reveal" data-cat="fintech" data-project="speedoloan"><div class="proj-accent"></div><div class="proj-thumb">💳<div class="proj-hover-overlay"><span class="view-label">View Details</span></div></div><div class="proj-body"><span class="proj-cat-badge">FinTech</span><p class="proj-name">Speedoloan</p><p class="proj-desc">CRM & Loan Management System for fast-paced fintech operations with complex user flows.</p><div class="proj-footer"><span class="proj-company">Agrimfincap</span><span class="proj-arrow">→</span></div></div></div>
+      <div class="proj-card reveal" data-cat="wellness" data-project="liveis"><div class="proj-accent"></div><div class="proj-thumb">🧠<div class="proj-hover-overlay"><span class="view-label">View Details</span></div></div><div class="proj-body"><span class="proj-cat-badge">Mental Wellness</span><p class="proj-name">LiveIs</p><p class="proj-desc">Mental wellness mobile app with calming UX, mood tracking, and therapeutic journeys.</p><div class="proj-footer"><span class="proj-company">Dhanasya Software</span><span class="proj-arrow">→</span></div></div></div>
+      <div class="proj-card reveal" data-cat="events" data-project="searchashow"><div class="proj-accent"></div><div class="proj-thumb">🎟️<div class="proj-hover-overlay"><span class="view-label">View Details</span></div></div><div class="proj-body"><span class="proj-cat-badge">Event Booking</span><p class="proj-name">Search a Show</p><p class="proj-desc">Event discovery and booking platform with intuitive search and seamless checkout.</p><div class="proj-footer"><span class="proj-company">Dhanasya Software</span><span class="proj-arrow">→</span></div></div></div>
+      <div class="proj-card reveal" data-cat="saas" data-project="snowx"><div class="proj-accent"></div><div class="proj-thumb">❄️<div class="proj-hover-overlay"><span class="view-label">View Details</span></div></div><div class="proj-body"><span class="proj-cat-badge">On-demand SaaS</span><p class="proj-name">Snowx</p><p class="proj-desc">Snow plowing service app connecting homeowners with providers via real-time booking.</p><div class="proj-footer"><span class="proj-company">Dhanasya Software</span><span class="proj-arrow">→</span></div></div></div>
+      <div class="proj-card reveal" data-cat="pm" data-project="drafty"><div class="proj-accent"></div><div class="proj-thumb">📋<div class="proj-hover-overlay"><span class="view-label">View Details</span></div></div><div class="proj-body"><span class="proj-cat-badge">Project Management</span><p class="proj-name">Drafty</p><p class="proj-desc">Project management tool with kanban boards, team collaboration and task dashboards.</p><div class="proj-footer"><span class="proj-company">Ira Technologies</span><span class="proj-arrow">→</span></div></div></div>
+      <div class="proj-card reveal" data-cat="education" data-project="survgyan"><div class="proj-accent"></div><div class="proj-thumb">📚<div class="proj-hover-overlay"><span class="view-label">View Details</span></div></div><div class="proj-body"><span class="proj-cat-badge">Education</span><p class="proj-name">Survgyan</p><p class="proj-desc">EdTech platform for survey-based learning with dashboards for students and admins.</p><div class="proj-footer"><span class="proj-company">Ira Technologies</span><span class="proj-arrow">→</span></div></div></div>
+      <div class="proj-card reveal" data-cat="ai" data-project="actnable"><div class="proj-accent"></div><div class="proj-thumb">🤖<div class="proj-hover-overlay"><span class="view-label">View Details</span></div></div><div class="proj-body"><span class="proj-cat-badge">AI Product</span><p class="proj-name">Actnable.ai</p><p class="proj-desc">AI-powered platform with complex data visualization and streamlined workflows.</p><div class="proj-footer"><span class="proj-company">Ira Technologies</span><span class="proj-arrow">→</span></div></div></div>
+      <div class="proj-card reveal" data-cat="education" data-project="preto3"><div class="proj-accent"></div><div class="proj-thumb">🎓<div class="proj-hover-overlay"><span class="view-label">View Details</span></div></div><div class="proj-body"><span class="proj-cat-badge">Education</span><p class="proj-name">Preto3</p><p class="proj-desc">Educational mobile app with structured course flows and progress tracking.</p><div class="proj-footer"><span class="proj-company">Ira Technologies</span><span class="proj-arrow">→</span></div></div></div>
+      <div class="proj-card reveal" data-cat="pm" data-project="homecare"><div class="proj-accent"></div><div class="proj-thumb">🏠<div class="proj-hover-overlay"><span class="view-label">View Details</span></div></div><div class="proj-body"><span class="proj-cat-badge">Project Management</span><p class="proj-name">Homecare</p><p class="proj-desc">Home services platform connecting homeowners with professionals and tracking jobs.</p><div class="proj-footer"><span class="proj-company">Ira Technologies</span><span class="proj-arrow">→</span></div></div></div>
+      <div class="proj-card reveal" data-cat="ecommerce" data-project="dealbase"><div class="proj-accent"></div><div class="proj-thumb">🛍️<div class="proj-hover-overlay"><span class="view-label">View Details</span></div></div><div class="proj-body"><span class="proj-cat-badge">E-commerce</span><p class="proj-name">Dealbase</p><p class="proj-desc">E-commerce deals aggregator with smart filtering and conversion-focused checkout.</p><div class="proj-footer"><span class="proj-company">Ira Technologies</span><span class="proj-arrow">→</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section" id="process">
+  <div class="container">
+    <p class="sec-label reveal">How I Work</p>
+    <h2 class="sec-title reveal">My design<br/><em>process</em></h2>
+    <div class="process-grid">
+      <div class="process-card reveal"><span class="pc-num">01</span><p class="pc-title">Discover</p><p class="pc-desc">Understanding users, goals, and context through research and competitive analysis.</p></div>
+      <div class="process-card reveal"><span class="pc-num">02</span><p class="pc-title">Define</p><p class="pc-desc">Synthesizing insights into personas, journey maps, and problem statements.</p></div>
+      <div class="process-card reveal"><span class="pc-num">03</span><p class="pc-title">Ideate</p><p class="pc-desc">Sketching and wireframing multiple directions before selecting the best solution.</p></div>
+      <div class="process-card reveal"><span class="pc-num">04</span><p class="pc-title">Prototype</p><p class="pc-desc">Building interactive prototypes in Figma or Framer to validate concepts early.</p></div>
+      <div class="process-card reveal"><span class="pc-num">05</span><p class="pc-title">Test & Ship</p><p class="pc-desc">Usability testing, iterating on feedback, and handing off polished design systems.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <p class="sec-label reveal">Education</p>
+    <h2 class="sec-title reveal">Academic<br/><em>foundation</em></h2>
+    <div class="edu-grid">
+      <div class="edu-card reveal"><p class="edu-yr">Jul 2024 – Pursuing</p><p class="edu-deg">Master of Computer Applications</p><p class="edu-uni">AKTU University</p></div>
+      <div class="edu-card reveal"><p class="edu-yr">Jul 2021 – Jun 2024</p><p class="edu-deg">Bachelor of Computer Applications</p><p class="edu-uni">CCSU University</p></div>
+      <div class="cert-glass reveal"><div class="cert-icon">🏅</div><div><p class="cert-title">Complete Web & Mobile Designer: UI/UX, Figma</p><p class="cert-sub">Udemy — Professional Certificate</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HIRE CTA -->
+<div class="hire-section">
+  <div class="hire-card reveal">
+    <div class="hire-glow"></div>
+    <p class="hire-label">✦ Open to Work</p>
+    <h2 class="hire-title">Let's build something<br/>remarkable</h2>
+    <p class="hire-sub">Available for full-time roles, freelance projects, and design collaborations.</p>
+    <div class="hire-btn-wrap">
+      <a href="mailto:nainshikaushik69@gmail.com" class="btn-hire-main"><span class="btn-icon">👋</span> Hire Me</a>
+      <a href="#contact" class="btn-glass" style="border-radius:100px">See Contact →</a>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <p class="sec-label reveal">Get In Touch</p>
+    <h2 class="sec-title reveal">Ready to<br/><em>connect?</em></h2>
+    <div class="contact-grid">
+
+      <!-- LEFT: email + WhatsApp button directly below -->
+      <div class="contact-left reveal">
+        <p>Whether you're hiring, collaborating, or just want to chat about design — reach out anytime.</p>
+        <a href="mailto:nainshikaushik69@gmail.com" class="contact-email">nainshikaushik69@gmail.com</a>
+        <!-- WhatsApp ONLY here -->
+        <br/><br/>
+        <a href="https://wa.me/919634388281?text=Hi%20Nainshi!%20I%20saw%20your%20portfolio%20and%20would%20love%20to%20connect." target="_blank" class="wa-below-email">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Message on WhatsApp
+        </a>
+      </div>
+
+      <!-- RIGHT: other contact details -->
+      <div class="contact-items reveal">
+        <div class="contact-item"><div class="ci-icon">📱</div><div><p class="ci-label">Phone</p><p class="ci-val">+91 96343 88281</p></div></div>
+        <div class="contact-item"><div class="ci-icon">📍</div><div><p class="ci-label">Location</p><p class="ci-val">Bulanshahr, Uttar Pradesh</p></div></div>
+        <a href="https://www.behance.net/nainshikaushik" target="_blank" class="contact-item" style="text-decoration:none;"><div class="ci-icon" style="background:linear-gradient(135deg,rgba(0,100,255,.25),rgba(0,180,255,.15));">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(100,180,255,.9)"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029H23.726zm-7.726-3h3.427c-.123-1.979-1.25-2.012-1.701-2.012-1.047 0-1.596.593-1.726 2.012zM8.276 18h-1.98c-.825 0-1.538-.548-1.538-1.578V10H3.297V8h1.461V5.991h2V8h2.012v2H6.758v4.418c0 .429.144.673.57.673h1.442V18H8.276zm-5-8H0v10h2.524V14h.752c.646 0 1.444.33 1.444 1.01 0 .67-.654 1.016-1.444 1.016H2.524v1.99H3.476C5.31 18 7 17.095 7 15.143c0-1.238-.614-2.133-1.686-2.509C6.187 12.198 6.688 11.444 6.688 10.519 6.688 10.755 5.285 10 3.276 10z"/></svg>
+        </div><div><p class="ci-label">Behance</p><p class="ci-val">behance.net/nainshikaushik ↗</p></div></a>
+        <a href="https://www.linkedin.com/in/nainshi-kaushik-7734082b8" target="_blank" class="contact-item" style="text-decoration:none;"><div class="ci-icon" style="background:linear-gradient(135deg,rgba(0,119,181,.3),rgba(0,160,220,.15));">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(100,180,255,.9)"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </div><div><p class="ci-label">LinkedIn</p><p class="ci-val">linkedin.com/in/nainshi-kaushik ↗</p></div></a>
+        <div class="contact-item"><div class="ci-icon">🟢</div><div><p class="ci-label">Availability</p><p class="ci-val">Open to new opportunities</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2025 Nainshi Kaushik — UX/UI Designer · Made with intention</footer>
+
+<script>
+/* ── PROJECT DATA ── */
+const projects={
+  speedoloan:{emoji:'💳',cat:'FinTech',catStyle:'background:rgba(123,79,255,.12);border:1px solid rgba(123,79,255,.2);color:rgba(160,130,255,.9)',accent:'linear-gradient(135deg,#7B4FFF,#00E5FF)',title:'Speedoloan',company:'Agrimfincap Pvt. Ltd. · Dec 2025 – Present',overview:'Speedoloan is a CRM and Loan Management System built for a fast-paced fintech company. It helps loan officers manage customer data, track loan applications, and handle disbursements — all within a single, streamlined interface.',features:['Designed end-to-end user flows for loan application and approval processes','Created wireframes and high-fidelity mockups for the CRM dashboard','Built a design system with reusable components for consistency','Improved usability of complex data-heavy screens through clear information hierarchy','Collaborated with developers for smooth design handoff'],tags:['Figma','CRM Design','Dashboard','User Flows','Wireframing','Design System','FinTech']},
+  liveis:{emoji:'🧠',cat:'Mental Wellness',catStyle:'background:rgba(57,255,143,.08);border:1px solid rgba(57,255,143,.2);color:rgba(57,255,143,.9)',accent:'linear-gradient(135deg,#39FF8F,#00E5FF)',title:'LiveIs',company:'Dhanasya Software Pvt. Ltd. · Jun–Dec 2025',overview:'LiveIs is a mental wellness mobile app designed to help users manage stress, track mood, and build healthy habits. The design prioritizes calm, reassuring aesthetics with gentle interactions that feel non-intimidating and supportive.',features:['Designed calming onboarding flow with mood check-in screens','Created mood tracking UI with expressive, accessible visuals','Built a resource library for guided meditations and breathing exercises','Designed notification system for gentle daily reminders','Prototyped full user journey from registration to first session'],tags:['Figma','Mobile App','UX Research','Prototyping','Interaction Design','Wellness']},
+  searchashow:{emoji:'🎟️',cat:'Event Booking',catStyle:'background:rgba(255,79,203,.08);border:1px solid rgba(255,79,203,.2);color:rgba(255,79,203,.9)',accent:'linear-gradient(135deg,#FF4FCB,#FF8C42)',title:'Search a Show',company:'Dhanasya Software Pvt. Ltd. · Jun–Dec 2025',overview:'Search a Show is an event discovery and ticket booking platform. Users can browse concerts, theatre shows, and live events with powerful filters, view seating maps, and complete purchases seamlessly.',features:['Designed event discovery homepage with smart filter system','Created seat selection UI with interactive venue map','Built streamlined 3-step checkout flow reducing drop-off','Designed event detail pages with rich media and social sharing','Crafted a mobile-first responsive layout'],tags:['Figma','Mobile App','Web Design','User Flows','E-commerce UX','Prototyping']},
+  snowx:{emoji:'❄️',cat:'On-demand SaaS',catStyle:'background:rgba(123,79,255,.12);border:1px solid rgba(123,79,255,.2);color:rgba(160,130,255,.9)',accent:'linear-gradient(135deg,#7B4FFF,#FF4FCB)',title:'Snowx',company:'Dhanasya Software Pvt. Ltd. · Jun–Dec 2025',overview:'Snowx is an on-demand snow plowing service app. Homeowners can book a service provider, track their arrival in real time, and manage recurring bookings.',features:['Designed two-sided app experience for homeowners and service providers','Created real-time map tracking interface for live job monitoring','Built booking and scheduling flow with address and time preferences','Designed rating and review system for service feedback','Prototyped the full job lifecycle from request to completion'],tags:['Figma','Mobile App','Two-sided Marketplace','Maps UI','Interaction Design']},
+  drafty:{emoji:'📋',cat:'Project Management',catStyle:'background:rgba(255,79,203,.08);border:1px solid rgba(255,79,203,.2);color:rgba(255,79,203,.9)',accent:'linear-gradient(135deg,#FF4FCB,#7B4FFF)',title:'Drafty',company:'Ira Technologies Pvt. Ltd. · Jul 2024 – May 2025',overview:'Drafty is a project management tool that helps teams plan, track, and collaborate on work with Kanban boards, task assignments, deadline tracking, and team chat.',features:['Designed Kanban board with drag-and-drop task management','Created team workspace with member roles and permission levels','Built project overview dashboard with progress charts and timelines','Designed task detail panel with subtasks, attachments, and comments','Created onboarding experience to guide new teams through setup'],tags:['Figma','SaaS Design','Dashboard','Web App','Design System','UX Research']},
+  survgyan:{emoji:'📚',cat:'Education',catStyle:'background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);color:rgba(0,229,255,.9)',accent:'linear-gradient(135deg,#00E5FF,#39FF8F)',title:'Survgyan',company:'Ira Technologies Pvt. Ltd. · Jul 2024 – May 2025',overview:'Survgyan is an EdTech platform leveraging surveys and quizzes for knowledge assessment, serving both students taking assessments and administrators creating and analyzing surveys.',features:['Designed student-facing quiz and survey interface with progress indicators','Built admin dashboard for creating and analyzing survey results','Created data visualization for survey analytics and response rates','Designed role-based dashboard with distinct admin and student views','Crafted mobile-responsive layout for on-the-go learning'],tags:['Figma','EdTech','Dashboard Design','Mobile App','Data Visualization','UX Research']},
+  actnable:{emoji:'🤖',cat:'AI Product',catStyle:'background:rgba(123,79,255,.12);border:1px solid rgba(123,79,255,.2);color:rgba(160,130,255,.9)',accent:'linear-gradient(135deg,#7B4FFF,#00E5FF)',title:'Actnable.ai',company:'Ira Technologies Pvt. Ltd. · Jul 2024 – May 2025',overview:'Actnable.ai is an AI-powered business intelligence platform that helps organizations turn raw data into actionable insights through AI-generated reports, smart dashboards, and automated workflow triggers.',features:['Designed complex data dashboard with AI-generated insight cards','Created natural language query interface for non-technical users','Built workflow builder with visual automation flow editor','Designed onboarding flow explaining AI features clearly','Developed a comprehensive UI component library'],tags:['Figma','AI Product','Dashboard','Data Viz','Interaction Design','Design System']},
+  preto3:{emoji:'🎓',cat:'Education',catStyle:'background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);color:rgba(0,229,255,.9)',accent:'linear-gradient(135deg,#00E5FF,#39FF8F)',title:'Preto3',company:'Ira Technologies Pvt. Ltd. · Jul 2024 – May 2025',overview:'Preto3 is an educational mobile app for structured learning with video courses, assignments, and progress tracking targeting students preparing for competitive exams.',features:['Designed course catalogue with category filters and search','Built video player UI with notes and bookmarking features','Created progress tracking dashboard with streaks and milestones','Designed assignment submission and feedback flow','Built a study planner with calendar integration'],tags:['Figma','Mobile App','EdTech','Prototyping','Interaction Design']},
+  homecare:{emoji:'🏠',cat:'Project Management',catStyle:'background:rgba(255,79,203,.08);border:1px solid rgba(255,79,203,.2);color:rgba(255,79,203,.9)',accent:'linear-gradient(135deg,#FF4FCB,#7B4FFF)',title:'Homecare',company:'Ira Technologies Pvt. Ltd. · Jul 2024 – May 2025',overview:'Homecare is a home services management platform connecting homeowners with verified service professionals for repairs, cleaning, and maintenance — with full project tracking.',features:['Designed service booking flow with provider profiles and availability','Created job status tracking with milestone updates','Built service provider dashboard for managing jobs and earnings','Designed review and rating system','Created messaging interface between homeowners and providers'],tags:['Figma','Mobile App','Service Marketplace','Dashboard','Prototyping','UX Research']},
+  dealbase:{emoji:'🛍️',cat:'E-commerce',catStyle:'background:rgba(255,140,66,.08);border:1px solid rgba(255,140,66,.2);color:rgba(255,180,100,.9)',accent:'linear-gradient(135deg,#FF8C42,#FF4FCB)',title:'Dealbase',company:'Ira Technologies Pvt. Ltd. · Jul 2024 – May 2025',overview:'Dealbase is an e-commerce deals aggregator that pulls the best offers from multiple platforms. Users can compare products, track price drops, and get alerts on wishlist items.',features:['Designed product comparison table with side-by-side feature view','Created price history chart and deal alert setup flow','Built personalized deal feed based on user interests','Designed one-click redirect to partner checkout pages','Crafted onboarding flow to capture user preferences'],tags:['Figma','E-commerce','Web Design','Data Visualization','Mobile App','UX Research']}
+};
+
+/* ── CURSOR ── */
+const cur=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  setTimeout(()=>{trail.style.left=e.clientX+'px';trail.style.top=e.clientY+'px';},70);
+});
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{trail.style.transform='translate(-50%,-50%) scale(1.6)';trail.style.borderColor='rgba(123,79,255,.9)'});
+  el.addEventListener('mouseleave',()=>{trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(123,79,255,.6)'});
+});
+
+/* ── MOBILE NAV ── */
+document.getElementById('navHamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.add('open'));
+document.getElementById('mobileClose').addEventListener('click',()=>document.getElementById('mobileMenu').classList.remove('open'));
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open')}
+
+/* ── SCROLL REVEAL ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*80)});
+},{threshold:.07,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ── PROJECT FILTER ── */
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.proj-card').forEach(card=>{
+      card.classList.toggle('hidden',f!=='all'&&card.dataset.cat!==f);
+    });
+  });
+});
+
+/* ── PROJECT MODAL ── */
+const modal=document.getElementById('projectModal');
+document.querySelectorAll('.proj-card').forEach(card=>{
+  card.addEventListener('click',()=>{
+    const p=projects[card.dataset.project]; if(!p) return;
+    document.getElementById('modalEmoji').textContent=p.emoji;
+    const catEl=document.getElementById('modalCat');
+    catEl.textContent=p.cat; catEl.style.cssText=p.catStyle;
+    document.getElementById('modalAccent').style.background=p.accent;
+    document.getElementById('modalTitle').textContent=p.title;
+    document.getElementById('modalCompany').textContent=p.company;
+    document.getElementById('modalOverview').textContent=p.overview;
+    const fl=document.getElementById('modalFeatures'); fl.innerHTML='';
+    p.features.forEach(f=>{const li=document.createElement('li');li.textContent=f;fl.appendChild(li)});
+    const tg=document.getElementById('modalTags'); tg.innerHTML='';
+    p.tags.forEach(t=>{const s=document.createElement('span');s.className='modal-tag';s.textContent=t;tg.appendChild(s)});
+    modal.classList.add('open');
+    document.body.style.overflow='hidden';
+  });
+});
+document.getElementById('modalClose').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+function closeModal(){modal.classList.remove('open');document.body.style.overflow=''}
+</script>
+</body>
+</html>
