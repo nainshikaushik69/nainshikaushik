@@ -64,7 +64,7 @@ nav{
 .hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7rem clamp(1rem,6vw,4rem) 5rem;position:relative;z-index:1}
 .hero-badge{display:inline-flex;align-items:center;gap:.6rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(12px);padding:.45rem 1.2rem;border-radius:100px;font-size:clamp(.65rem,.9vw,.75rem);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem;animation:fadeUp .7s .4s both}
 .badge-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1.8s ease-in-out infinite;flex-shrink:0}
-.hero-name{font-family:var(--display);font-size:clamp(3.8rem,9vw,7.5rem);font-weight:800;line-height:.88;letter-spacing:-.03em;animation:fadeUp .8s .55s both}
+.hero-name{font-family:var(--display);font-size:clamp(3.8rem,9vw,7.5rem);font-weight:800;line-height:.88;letter-spacing:-.03em;animation:fadeUp .8s .55s both;max-width:100%;word-break:break-word}
 .hero-name .l1{display:block;color:var(--white)}
 .hero-name .l2{display:block;background:linear-gradient(135deg,var(--purple) 0%,var(--pink) 50%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200%;animation:gradShift 5s ease infinite}
 @keyframes gradShift{0%,100%{background-position:0%}50%{background-position:100%}}
@@ -329,7 +329,7 @@ footer{text-align:center;padding:1.5rem;border-top:1px solid rgba(255,255,255,.0
 
   /* Hero */
   .hero{padding:6rem 1.5rem 4rem}
-  .hero-name{font-size:clamp(3.2rem,15vw,5.5rem)}
+  .hero-name{font-size:clamp(2.4rem,8vw,4rem)}
   .hero-cta-row{gap:.8rem}
 
   /* Grids → single column */
@@ -360,23 +360,34 @@ footer{text-align:center;padding:1.5rem;border-top:1px solid rgba(255,255,255,.0
 
 /* Mobile: ≤480px */
 @media(max-width:480px){
-  .hero-name{font-size:clamp(2.8rem,18vw,4.5rem)}
-  .hero-role{font-size:.88rem}
-  .btn-glow,.btn-glass,.btn-hire-main{font-size:.82rem;padding:.82rem 1.6rem}
+  .hero{padding:6rem 1.2rem 4rem}
+  .hero-name{font-size:clamp(2.2rem,11vw,3rem);line-height:.92;letter-spacing:-.02em}
+  .hero-role{font-size:.82rem;margin:1.2rem 0 1.8rem}
+  .hero-badge{font-size:.6rem;padding:.35rem .9rem}
+  .hero-cta-row{gap:.6rem}
+  .btn-glow,.btn-glass,.btn-hire-main{font-size:.78rem;padding:.72rem 1.4rem}
+  .sec-title{font-size:clamp(1.5rem,7vw,2rem)}
+  .hire-title{font-size:clamp(1.5rem,7vw,2rem)}
+  .stat-n{font-size:1.6rem}
+  .stat-l{font-size:.58rem;letter-spacing:.1em}
   .proj-grid{grid-template-columns:1fr}
   .process-grid{grid-template-columns:1fr 1fr}
   .stats-glass{grid-template-columns:1fr 1fr}
-  .sec-title{font-size:clamp(1.8rem,9vw,2.8rem)}
-  .modal-box{border-radius:18px}
-  .modal-inner{padding:1.4rem}
-  .nav-hire{display:none}
+  .contact-email{font-size:1rem;word-break:break-all}
+  .hire-card{padding:2rem 1.2rem}
+  .hire-sub{font-size:.82rem}
+  .pc-num{font-size:1.6rem}
+  .modal-title{font-size:1.3rem}
 }
 
 /* Very small: ≤360px */
 @media(max-width:360px){
-  .hero-name{font-size:2.6rem}
+  .hero-name{font-size:2rem;letter-spacing:-.01em}
+  .sec-title{font-size:1.4rem}
+  .hire-title{font-size:1.4rem}
   .proj-grid{grid-template-columns:1fr}
   .process-grid{grid-template-columns:1fr}
+  .stat-n{font-size:1.4rem}
 }
 </style>
 </head>
@@ -428,7 +439,7 @@ footer{text-align:center;padding:1.5rem;border-top:1px solid rgba(255,255,255,.0
     <li><a href="#projects">Projects</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="mailto:nainshikaushik69@gmail.com" class="nav-hire"><span class="hire-dot"></span> Hire Me</a>
+  <a href="/cdn-cgi/l/email-protection#b6d8d7dfd8c5dedfddd7c3c5dedfdd808ff6d1dbd7dfda98d5d9db" class="nav-hire"><span class="hire-dot"></span> Hire Me</a>
   <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
     <span></span><span></span><span></span>
   </button>
@@ -440,7 +451,7 @@ footer{text-align:center;padding:1.5rem;border-top:1px solid rgba(255,255,255,.0
   <h1 class="hero-name"><span class="l1">Nainshi</span><span class="l2">Kaushik</span></h1>
   <p class="hero-role">UX/UI Designer · <span>2 Years Experience</span> · Mobile · Web · SaaS</p>
   <div class="hero-cta-row">
-    <a href="mailto:nainshikaushik69@gmail.com" class="btn-glow">✦ Hire Me</a>
+    <a href="/cdn-cgi/l/email-protection#3b555a5255485352505a4e485352500d027b5c565a525715585456" class="btn-glow">✦ Hire Me</a>
     <a href="#projects" class="btn-glass">View Projects →</a>
     <a href="#contact" class="btn-glass">Contact</a>
   </div>
@@ -602,7 +613,7 @@ footer{text-align:center;padding:1.5rem;border-top:1px solid rgba(255,255,255,.0
     <h2 class="hire-title">Let's build something<br/>remarkable</h2>
     <p class="hire-sub">Available for full-time roles, freelance projects, and design collaborations.</p>
     <div class="hire-btn-wrap">
-      <a href="mailto:nainshikaushik69@gmail.com" class="btn-hire-main"><span class="btn-icon">👋</span> Hire Me</a>
+      <a href="/cdn-cgi/l/email-protection#b5dbd4dcdbc6dddcded4c0c6dddcde838cf5d2d8d4dcd99bd6dad8" class="btn-hire-main"><span class="btn-icon">👋</span> Hire Me</a>
       <a href="#contact" class="btn-glass" style="border-radius:100px">See Contact →</a>
     </div>
   </div>
@@ -618,7 +629,7 @@ footer{text-align:center;padding:1.5rem;border-top:1px solid rgba(255,255,255,.0
       <!-- LEFT: email + WhatsApp button directly below -->
       <div class="contact-left reveal">
         <p>Whether you're hiring, collaborating, or just want to chat about design — reach out anytime.</p>
-        <a href="mailto:nainshikaushik69@gmail.com" class="contact-email">nainshikaushik69@gmail.com</a>
+        <a href="/cdn-cgi/l/email-protection#117f70787f6279787a70646279787a272851767c70787d3f727e7c" class="contact-email"><span class="__cf_email__" data-cfemail="214f40484f5249484a40545249484a171861464c40484d0f424e4c">[email&#160;protected]</span></a>
         <!-- WhatsApp ONLY here -->
         <br/><br/>
         <a href="https://wa.me/919634388281?text=Hi%20Nainshi!%20I%20saw%20your%20portfolio%20and%20would%20love%20to%20connect." target="_blank" class="wa-below-email">
@@ -645,7 +656,7 @@ footer{text-align:center;padding:1.5rem;border-top:1px solid rgba(255,255,255,.0
 
 <footer>© 2025 Nainshi Kaushik — UX/UI Designer · Made with intention</footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── PROJECT DATA ── */
 const projects={
   speedoloan:{emoji:'💳',cat:'FinTech',catStyle:'background:rgba(123,79,255,.12);border:1px solid rgba(123,79,255,.2);color:rgba(160,130,255,.9)',accent:'linear-gradient(135deg,#7B4FFF,#00E5FF)',title:'Speedoloan',company:'Agrimfincap Pvt. Ltd. · Dec 2025 – Present',overview:'Speedoloan is a CRM and Loan Management System built for a fast-paced fintech company. It helps loan officers manage customer data, track loan applications, and handle disbursements — all within a single, streamlined interface.',features:['Designed end-to-end user flows for loan application and approval processes','Created wireframes and high-fidelity mockups for the CRM dashboard','Built a design system with reusable components for consistency','Improved usability of complex data-heavy screens through clear information hierarchy','Collaborated with developers for smooth design handoff'],tags:['Figma','CRM Design','Dashboard','User Flows','Wireframing','Design System','FinTech']},
